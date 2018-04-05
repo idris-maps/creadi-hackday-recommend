@@ -8,7 +8,7 @@ const request = supertest(app)
 const data = {
   holiday: 'Test2',
   keywords: [{ keyword: 'Bike', points: 1 }],
-  seasons: ['*'],
+  seasons: ['Sommer'],
 }
 let existingId
 
@@ -70,6 +70,26 @@ test('PATCH /holidays/:holidayTypeId/keywords/:keyword', t => {
     .expect(200)
     .end((err, res) => {
       t.same(res.body.keywords.find(({ keyword }) => keyword === 'Ski').points, 33, 'should update keyword points')
+      t.end(err)
+    })
+})
+
+test('POST /holidays/:holidayTypeId/seasons', t => {
+  request.post('/holidays/' + existingId + '/seasons')
+    .type('json')
+    .send({ season: 'Winter' })
+    .expect(200)
+    .end((err, res) => {
+      t.true(res.body.seasons.find(s => s === 'Winter'), 'should add a season')
+      t.end(err)
+    })
+})
+
+test('DELETE /holidays/:holidayTypeId/seasons/:season', t => {
+  request.delete('/holidays/' + existingId + '/seasons/Sommer')
+    .expect(200)
+    .end((err, res) => {
+      t.false(res.body.seasons.find(s => s === 'Sommer'), 'should delete a season')
       t.end(err)
     })
 })

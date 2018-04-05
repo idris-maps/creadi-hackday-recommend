@@ -4,6 +4,7 @@ import onError from './onError'
 import {
   isValidPost,
   isValidAddKeyword,
+  isValidAddSeason,
 } from './holidaysController.utils'
 
 const router: Router = Router()
@@ -68,5 +69,27 @@ router.patch('/:holidayTypeId/keywords/:keyword', (req: Request, res: Response) 
       ? res.status(200).send(resp)
       : res.sendStatus(404))
     .catch(onError(res, 'Could not update keyword points')))
+
+router.post('/:holidayTypeId/seasons', (req: Request, res: Response) =>
+  isValidAddSeason(req)
+    ? HolidayType.findById(req.params.holidayTypeId)
+        .then(holiday => holiday
+          ? holiday.addSeason(req.body.season)
+          : null)
+        .then(resp => resp
+          ? res.status(200).send(resp)
+          : res.sendStatus(404))
+        .catch(onError(res, 'Could not add season'))
+    : res.status(400).json({ message: 'Invalid body' }))
+
+router.delete('/:holidayTypeId/seasons/:season', (req: Request, res: Response) =>
+  HolidayType.findById(req.params.holidayTypeId)
+    .then(holiday => holiday
+      ? holiday.deleteSeason(req.params.season)
+      : null)
+    .then(resp => resp
+      ? res.status(200).send(resp)
+      : res.sendStatus(404))
+    .catch(onError(res, 'Could not delete season')))
 
 export default router
