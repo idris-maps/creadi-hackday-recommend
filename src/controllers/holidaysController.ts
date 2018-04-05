@@ -33,3 +33,5 @@ router.delete('/:holidayTypeId', (req: Request, res: Response) =>
       ? res.sendStatus(204)
       : res.sendStatus(404))
     .catch(onError(res, 'Could not delete holiday type')))
+
+export default router
