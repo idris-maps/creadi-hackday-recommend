@@ -7,7 +7,7 @@ import {
 } from 'mongoose'
 
 export interface Keyword {
-  word: string
+  keyword: string
   points: number
 }
 
@@ -20,14 +20,27 @@ export interface HolidayTypeInterface {
 }
 
 export interface HolidayTypeModel extends HolidayTypeInterface, Document {
-
+  addKeyword(keyword: string, points?: number): Promise<HolidayTypeModel>
+  deleteKeyword(keyword: string): Promise<HolidayTypeModel>
 }
 
 const schema: Schema = new Schema({
-  word: { type: String, required: true },
-  points: { type: Array, default: [] },
+  holiday: { type: String, required: true },
+  keywords: { type: Array, default: [] },
   seasons: { type: Array, default: [] }
 })
+
+schema.methods.addKeyword = function(keyword: string, points = 1): Promise<HolidayTypeModel> {
+  const keywords = [...this.keywords, { keyword, points }]
+  const model = this.model(this.constructor.modelName, this.schema)
+  return model.findByIdAndUpdate(this._id, { $set: { keywords } }, { new: true })
+}
+
+schema.methods.deleteKeyword = function(keywordToDelete: string): Promise<HolidayTypeModel> {
+  const keywords = this.keywords.filter(({ keyword }) => keyword !== keywordToDelete)
+  const model = this.model(this.constructor.modelName, this.schema)
+  return model.findByIdAndUpdate(this._id, { $set: { keywords } }, { new: true })
+}
 
 export default (connection: Connection): Model<HolidayTypeModel> =>
   connection.model<HolidayTypeModel>('HolidayType', schema)
