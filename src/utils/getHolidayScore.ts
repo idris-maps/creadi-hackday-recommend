@@ -16,4 +16,5 @@ export default (page: string, types: HolidayTypeInterface[]): HolidayScore[] =>
       holiday,
       score: sum(points),
     }))
+    .filter(({ score }) => score !== 0)
     .sort(sortByScore)
