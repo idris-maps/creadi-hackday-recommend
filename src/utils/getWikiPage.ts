@@ -1,4 +1,4 @@
-import wikijs from 'wikijs'
+import wikijs from 'wikijs/dist/wiki'
 import { WikiPage } from '../models'
 // types
 import { WikiCoordinates, WikiPageContent } from './getWikiPage.d'
