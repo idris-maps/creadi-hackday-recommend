@@ -5,7 +5,12 @@ import getHolidayScore from './getHolidayScore'
 // types
 import { HolidayScore } from './getHolidayScore.d'
 
-export default (placeName: string, date: Date): Promise<HolidayScore[]> =>
+export interface Recommendation {
+  placeName: string
+  date: Date
+}
+
+export default ({ placeName, date }: Recommendation): Promise<HolidayScore[]> =>
   getCoordinates(placeName)
     .then(place => Promise.all([
       getWikiPage(place),

@@ -63,7 +63,7 @@ router.delete('/:holidayTypeId/keywords/:keyword', (req: Request, res: Response)
 router.patch('/:holidayTypeId/keywords/:keyword', (req: Request, res: Response) =>
   HolidayType.findById(req.params.holidayTypeId)
     .then(holiday => holiday
-      ? holiday.updateKeywordPoints(req.params.keyword, req.body.points)
+      ? holiday.updateKeywordPoints(decodeURIComponent(req.params.keyword), req.body.points)
       : null)
     .then(resp => resp
       ? res.status(200).send(resp)

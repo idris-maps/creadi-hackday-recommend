@@ -1,5 +1,7 @@
 import { Request } from 'express'
 
+// TODO proper validation
+
 const isArray = (value: any): boolean => Array.isArray(value)
 const isString = (value: any): boolean => typeof value === 'string'
 const isInteger = (value: any): boolean => Number.isInteger(value)
@@ -8,8 +10,6 @@ const isIntegerOrUndefined = (value: any): boolean =>
 const seasons = ['*', 'Winter', 'Frühling', 'Sommer', 'Herbst']
 const isSeason = (value: any) =>
   value && isString(value) && seasons.includes(value)
-
-// TODO proper validation
 
 export const isValidPost = (req: Request): boolean => {
   const { holiday, keywords, seasons } = req.body

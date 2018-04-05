@@ -11,7 +11,7 @@ test('Prepare data', t => {
 })
 
 test('getHolidayTypes with Laax in winter', t => {
-  getHolidayTypes('Laax', new Date('2019-01-01'))
+  getHolidayTypes({ placeName: 'Laax', date: new Date('2019-01-01') })
     .then(res => {
       const first = res[0]
       t.same(first.holiday, 'Skiferien', 'should return ski holidays as first choice')
