@@ -4,7 +4,7 @@ import { HolidayType } from '../models'
 // types
 import { Place } from './getCoordinates.d'
 import { HolidayTypeInterface, Season } from '../models/holidayType'
-import { Months, HolidayTypeWithMonths } from './getHolidayTypeBySeason.d'
+import { Months, HolidayTypeWithMonths } from './getHolidayTypesBySeason.d'
 
 const allMonths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 const months: Months = {
