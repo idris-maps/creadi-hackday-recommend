@@ -32,16 +32,24 @@ test('HolidayType model findById add / delete keyword', t => {
       t.same(holidayType.holiday, 'Test1', 'should return a holiday type')
       return holidayType.addKeyword('Bike', 2)
     })
-    .then(added => {
-      t.true(added.keywords.find(({ keyword }) => keyword === 'Bike'), 'should add keyword')
-      return added.deleteKeyword('Ski')
+    .then(d => {
+      t.true(d.keywords.find(({ keyword }) => keyword === 'Bike'), 'should add keyword')
+      return d.deleteKeyword('Ski')
     })
-    .then(deleted => {
-      t.false(deleted.keywords.find(({ keyword }) => keyword === 'Ski'), 'should delete keyword')
-      return deleted.updateKeywordPoints('Bike', 22)
+    .then(d => {
+      t.false(d.keywords.find(({ keyword }) => keyword === 'Ski'), 'should delete keyword')
+      return d.updateKeywordPoints('Bike', 22)
     })
-    .then(updated => {
-      t.same(updated.keywords.find(({ keyword }) => keyword === 'Bike').points, 22, 'should update points')
+    .then(d => {
+      t.same(d.keywords.find(({ keyword }) => keyword === 'Bike').points, 22, 'should update points')
+      return d.addSeason('Sommer')
+    })
+    .then(d => {
+      t.true(d.seasons.find(season => season === 'Sommer'), 'should add season')
+      return d.deleteSeason('Winter')
+    })
+    .then(d => {
+      t.false(d.seasons.find(season => season === 'Winter'), 'should delete season')
       t.end()
     })
     .catch(t.end)
