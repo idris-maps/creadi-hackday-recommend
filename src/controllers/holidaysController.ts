@@ -1,7 +1,10 @@
 import { Router, Request, Response } from 'express'
 import { HolidayType } from '../models'
 import onError from './onError'
-import { isValidPost } from './holidaysController.utils'
+import {
+  isValidPost,
+  isValidAddKeyword,
+} from './holidaysController.utils'
 
 const router: Router = Router()
 
@@ -33,5 +36,27 @@ router.delete('/:holidayTypeId', (req: Request, res: Response) =>
       ? res.sendStatus(204)
       : res.sendStatus(404))
     .catch(onError(res, 'Could not delete holiday type')))
+
+router.post('/:holidayTypeId/keywords', (req: Request, res: Response) =>
+  isValidAddKeyword(req)
+    ? HolidayType.findById(req.params.holidayTypeId)
+        .then(holiday => holiday
+          ? holiday.addKeyword(req.body.keyword, req.body.points)
+          : null)
+        .then(resp => resp
+          ? res.status(200).send(resp)
+          : res.sendStatus(404))
+        .catch(onError(res, 'Could not add keyword'))
+    : res.status(400).json({ message: 'Invalid body' }))
+
+router.delete('/:holidayTypeId/keywords/:keyword', (req: Request, res: Response) =>
+  HolidayType.findById(req.params.holidayTypeId)
+    .then(holiday => holiday
+      ? holiday.deleteKeyword(req.params.keyword)
+      : null)
+    .then(resp => resp
+      ? res.status(200).send(resp)
+      : res.sendStatus(404))
+    .catch(onError(res, 'Could not delete keyword')))
 
 export default router

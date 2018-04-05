@@ -43,6 +43,26 @@ test('GET /holidays/:holidayTypeId', t => {
     })
 })
 
+test('POST /holidays/:holidayTypeId/keywords', t => {
+  request.post('/holidays/' + existingId + '/keywords')
+    .type('json')
+    .send({ keyword: 'Ski', points: 10 })
+    .expect(200)
+    .end((err, res) => {
+      t.true(res.body.keywords.find(({ keyword }) => keyword === 'Ski'), 'should add keyword')
+      t.end(err)
+    })
+})
+
+test('DELETE /holidays/:holidayTypeId/keywords/:keyword', t => {
+  request.delete('/holidays/' + existingId + '/keywords/Bike')
+    .expect(200)
+    .end((err, res) => {
+      t.false(res.body.keywords.find(({ keyword }) => keyword === 'Bike'), 'should delete keyword')
+      t.end(err)
+    })
+})
+
 test('DELETE /holidays/:holidayTypeId', t => {
   request.delete('/holidays/' + existingId)
     .expect(204)

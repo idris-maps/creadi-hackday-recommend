@@ -6,7 +6,7 @@ let existingId
 test('HolidayType model create', t => {
   HolidayType.create({
       holiday: 'Test1',
-      keywords: [{ word: 'Ski', points: 2 }],
+      keywords: [{ keyword: 'Ski', points: 2 }],
       seasons: ['Winter']
     })
     .then(holidayType => {
@@ -33,11 +33,11 @@ test('HolidayType model findById add / delete keyword', t => {
       return holidayType.addKeyword('Bike', 2)
     })
     .then(added => {
-      t.same(added.keywords.filter(({ keyword }) => keyword === 'Bike').length, 1, 'should add keyword')
+      t.true(added.keywords.find(({ keyword }) => keyword === 'Bike'), 'should add keyword')
       return added.deleteKeyword('Ski')
     })
     .then(deleted => {
-      t.same(deleted.keywords.filter(({ keyword }) => keyword === 'Ski').length, 0, 'should delete keyword')
+      t.false(deleted.keywords.find(({ keyword }) => keyword === 'Ski'), 'should delete keyword')
       t.end()
     })
     .catch(t.end)
