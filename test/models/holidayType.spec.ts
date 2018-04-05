@@ -38,6 +38,10 @@ test('HolidayType model findById add / delete keyword', t => {
     })
     .then(deleted => {
       t.false(deleted.keywords.find(({ keyword }) => keyword === 'Ski'), 'should delete keyword')
+      return deleted.updateKeywordPoints('Bike', 22)
+    })
+    .then(updated => {
+      t.same(updated.keywords.find(({ keyword }) => keyword === 'Bike').points, 22, 'should update points')
       t.end()
     })
     .catch(t.end)

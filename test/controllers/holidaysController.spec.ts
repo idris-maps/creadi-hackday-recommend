@@ -63,6 +63,17 @@ test('DELETE /holidays/:holidayTypeId/keywords/:keyword', t => {
     })
 })
 
+test('PATCH /holidays/:holidayTypeId/keywords/:keyword', t => {
+  request.patch('/holidays/' + existingId + '/keywords/Ski')
+    .type('json')
+    .send({ points: 33 })
+    .expect(200)
+    .end((err, res) => {
+      t.same(res.body.keywords.find(({ keyword }) => keyword === 'Ski').points, 33, 'should update keyword points')
+      t.end(err)
+    })
+})
+
 test('DELETE /holidays/:holidayTypeId', t => {
   request.delete('/holidays/' + existingId)
     .expect(204)

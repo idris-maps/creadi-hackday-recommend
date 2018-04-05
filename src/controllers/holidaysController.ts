@@ -59,4 +59,14 @@ router.delete('/:holidayTypeId/keywords/:keyword', (req: Request, res: Response)
       : res.sendStatus(404))
     .catch(onError(res, 'Could not delete keyword')))
 
+router.patch('/:holidayTypeId/keywords/:keyword', (req: Request, res: Response) =>
+  HolidayType.findById(req.params.holidayTypeId)
+    .then(holiday => holiday
+      ? holiday.updateKeywordPoints(req.params.keyword, req.body.points)
+      : null)
+    .then(resp => resp
+      ? res.status(200).send(resp)
+      : res.sendStatus(404))
+    .catch(onError(res, 'Could not update keyword points')))
+
 export default router

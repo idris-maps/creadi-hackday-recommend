@@ -22,6 +22,7 @@ export interface HolidayTypeInterface {
 export interface HolidayTypeModel extends HolidayTypeInterface, Document {
   addKeyword(keyword: string, points?: number): Promise<HolidayTypeModel>
   deleteKeyword(keyword: string): Promise<HolidayTypeModel>
+  updateKeywordPoints(keyword: string, points: number): Promise<HolidayTypeModel>
 }
 
 const schema: Schema = new Schema({
@@ -42,5 +43,13 @@ schema.methods.deleteKeyword = function(keywordToDelete: string): Promise<Holida
   return model.findByIdAndUpdate(this._id, { $set: { keywords } }, { new: true })
 }
 
+schema.methods.updateKeywordPoints = function(keywordToUpdate: string, points: number): Promise<HolidayTypeModel> {
+  const toUpdate = this.keywords.find(({ keyword }) => keyword === keywordToUpdate)
+  toUpdate.points = points
+  const otherKeywords = this.keywords.filter(({ keyword }) => keyword !== keywordToUpdate)
+  const keywords = [...otherKeywords, toUpdate]
+  const model = this.model(this.constructor.modelName, this.schema)
+  return model.findByIdAndUpdate(this._id, { $set: { keywords } }, { new: true })
+}
 export default (connection: Connection): Model<HolidayTypeModel> =>
   connection.model<HolidayTypeModel>('HolidayType', schema)
