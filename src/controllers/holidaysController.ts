@@ -5,6 +5,7 @@ import {
   isValidPost,
   isValidAddKeyword,
   isValidAddSeason,
+  sanitizeSeason,
 } from './holidaysController.utils'
 
 const router: Router = Router()
@@ -53,7 +54,7 @@ router.post('/:holidayTypeId/keywords', (req: Request, res: Response) =>
 router.delete('/:holidayTypeId/keywords/:keyword', (req: Request, res: Response) =>
   HolidayType.findById(req.params.holidayTypeId)
     .then(holiday => holiday
-      ? holiday.deleteKeyword(req.params.keyword)
+      ? holiday.deleteKeyword(decodeURIComponent(req.params.keyword))
       : null)
     .then(resp => resp
       ? res.status(200).send(resp)
@@ -85,7 +86,7 @@ router.post('/:holidayTypeId/seasons', (req: Request, res: Response) =>
 router.delete('/:holidayTypeId/seasons/:season', (req: Request, res: Response) =>
   HolidayType.findById(req.params.holidayTypeId)
     .then(holiday => holiday
-      ? holiday.deleteSeason(req.params.season)
+      ? holiday.deleteSeason(sanitizeSeason(req))
       : null)
     .then(resp => resp
       ? res.status(200).send(resp)
