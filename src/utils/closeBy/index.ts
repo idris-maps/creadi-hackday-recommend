@@ -1,10 +1,10 @@
-const getNear = require('./getNear')
+import getNear from './getNear'
 const golfClubs = require('./data/golfClubs.json')
 const bikeParks = require('./data/bikeParks.json')
 const skiResorts = require('./data/skiResorts.json')
 const cities = require('./data/cities.json')
 
-module.exports = {
+export default {
   golfClubs: getNear(golfClubs),
   bikeParks: getNear(bikeParks),
   skiResorts: getNear(skiResorts),
