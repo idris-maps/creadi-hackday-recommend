@@ -19,3 +19,12 @@ test('getHolidayTypes with Laax in winter', t => {
     })
     .catch(t.end)
 })
+
+test('getHolidayTypes with Liverpool', t => {
+  getHolidayTypes({ placeName: 'Liverpool', date: new Date('2019-01-01') })
+  .then(res => {
+    t.pass('should not crash because google does not know where it is')
+    t.end()
+  })
+  .catch(t.end)
+})
