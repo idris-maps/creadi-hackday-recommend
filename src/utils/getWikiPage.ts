@@ -45,6 +45,13 @@ const isInDatabase = (name: string): Promise<string> =>
       : null)
 
 const getPages = (name: string, place: Place): Promise<string> =>
+  getWikipediaPage(name, place)
+    .then(wikipedia => WikiPage.create({
+      name,
+      wikipedia: wikipedia && wikipedia.content ? wikipedia.content : null,
+      wikivoyage: '',
+    }))
+/*
   Promise.all([
       getWikivoyagePage(name),
       getWikipediaPage(name, place),
@@ -54,6 +61,7 @@ const getPages = (name: string, place: Place): Promise<string> =>
       wikipedia: wikipedia && wikipedia.content ? wikipedia.content : null,
       wikivoyage: wikivoyage && wikivoyage.content ? wikivoyage.content : null,
     }))
+*/
     .then(page => page
       ? `WIKIPEDIA:\n${page.wikipedia}\n\nWIKIVOYAGE:\n${page.wikivoyage}`
       : null)
