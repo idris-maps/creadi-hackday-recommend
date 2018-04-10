@@ -1,8 +1,8 @@
 import getNear from './getNear'
-const golfClubs = require('./data/golfClubs.json')
-const bikeParks = require('./data/bikeParks.json')
-const skiResorts = require('./data/skiResorts.json')
-const cities = require('./data/cities.json')
+import golfClubs from './data/golfClubs'
+import bikeParks from './data/bikeParks'
+import skiResorts from './data/skiResorts'
+import cities from './data/cities'
 
 export default (lat: number, lon: number) => ({
   golfClubs: getNear(golfClubs)(lat, lon),
